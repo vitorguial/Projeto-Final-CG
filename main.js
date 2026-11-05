@@ -10,14 +10,12 @@ window.addEventListener('DOMContentLoaded', function () {
     // 1. Câmera Orbital
     const camera = new BABYLON.ArcRotateCamera(
       "camera", 
-      Math.PI / 4, 
+      0, 
       Math.PI / 3, 
-      10, 
-      new BABYLON.Vector3(0, 1, 0), 
+      6, 
+      new BABYLON.Vector3(0, 2.9, 0), 
       scene
     );
-    //para remover a câmera livre, apague al inha de baixo
-    //camera.attachControl(canvas, true);
 
     // 2. Luz Hemisférica (ambiente)
     const hemiLight = new BABYLON.HemisphericLight(
@@ -67,29 +65,53 @@ window.addEventListener('DOMContentLoaded', function () {
     //dicionário das posições da câmera, altere isso Vitão
     const posicoesCamera = [
       { 
-        target: new BABYLON.Vector3(0, 0, 0), 
-        alpha: Math.PI / 4, 
-        beta: Math.PI / 3, 
-        radius: 10
-      },
-      { 
-        target: new BABYLON.Vector3(0, 2.9, 0), //posicao
+        target: new BABYLON.Vector3(0, 2.9, 0), 
         alpha: 0, //ângulo horizontal
         beta: Math.PI / 3, //ângulo vertical
+        radius: 6 //distancia do Zoom
+      },//base
+      { 
+        target: new BABYLON.Vector3(-1, 2.2, 0),
+        alpha: 0, //ângulo horizontal
+        beta: 0.05, //ângulo vertical
         radius: 5 //distancia do Zoom
-      },
+      },//visao de cima
       { 
-        target: new BABYLON.Vector3(-2, 1, 0), 
-        alpha: -Math.PI / 2, 
-        beta: Math.PI / 2, 
-        radius: 6
-      },
+        target: new BABYLON.Vector3(0, 0, 0), 
+        alpha: 0,                             
+        beta: Math.PI - 0.15,                 
+        radius: 8
+      },//visão de baixo para cima
       { 
-        target: new BABYLON.Vector3(2, 1, 0), 
-        alpha: Math.PI / 2, 
-        beta: Math.PI / 2, 
-        radius: 6
-      }
+        target: new BABYLON.Vector3(4, 2.5, -0.5),
+        alpha: 0,
+        beta: Math.PI / 2,
+        radius: 5
+      },//visão de fora para dentro
+      { 
+        target: new BABYLON.Vector3(0, 2.5, 0),
+        alpha: Math.PI /3,
+        beta: Math.PI /2,
+        radius: 3
+      },//visão da parede esquerda -> direita
+      { 
+        target: new BABYLON.Vector3(0, 2.5, 0),
+        alpha: -Math.PI /3,
+        beta: Math.PI /2,
+        radius: 3
+      },//visão da parede direita -> esquerda
+      { 
+        target: new BABYLON.Vector3(-0.8, 2.5, 0),
+        alpha: Math.PI + 0.4,
+        beta: Math.PI /2,
+        radius: 3
+      },//visão do canto
+      { 
+        target: new BABYLON.Vector3(-0.5, 2.5, 0),
+        alpha: Math.PI,
+        beta: Math.PI /2,
+        radius: 3
+      },//visão de tras
     ];
 
     //indice do vetor de posições da camera
