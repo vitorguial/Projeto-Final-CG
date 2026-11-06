@@ -128,10 +128,10 @@ window.addEventListener('DOMContentLoaded', function () {
 
     window.addEventListener("keydown", (event) => {
       
-      if(event.key === "w") {
+      if(event.key === "w" || event.key === "W") {
         dirLight.setEnabled(!dirLight.isEnabled());
       }
-      else if(event.key === "s") {
+      else if(event.key === "s" || event.key === "S") {
         hemiLight.setEnabled(!hemiLight.isEnabled());
       }
       else if (event.key === "ArrowRight") {
