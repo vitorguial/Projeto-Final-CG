@@ -118,11 +118,11 @@ body {
     top: 20px;
     left: 20px;
 
-    width: 50px;
     height: 50px;
+    width: 100px;
 
     border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 10px;
+    border-radius: 2px;
 
     background: rgba(16, 24, 39, 0.85);
     color: white;
@@ -137,7 +137,7 @@ body {
 }
 
 #pauseButton:hover {
-    background: #2563eb;
+    background: #FF9C4D;
     transform: scale(1.05);
 }
 
@@ -169,10 +169,10 @@ body {
 
     gap: 20px;
 
-    background: #17243b;
+    background: #000000;
 
-    border: 1px solid #3b82f6;
-    border-radius: 15px;
+    border: 1px solid #000000;
+    border-radius: 5px;
 
     color: white;
     text-align: center;
@@ -190,7 +190,7 @@ body {
     border: none;
     border-radius: 8px;
 
-    background: #2563eb;
+    background: #FF7F27;
     color: white;
 
     font-size: 15px;
@@ -201,7 +201,7 @@ body {
 }
 
 .pauseContent button:hover {
-    background: #3b82f6;
+    background: #FF9C4D;
     transform: scale(1.03);
 }
 
