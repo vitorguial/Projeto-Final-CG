@@ -1,24 +1,75 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cena Babylon.js - Modelos 3D</title>
-  
-  <!-- CSS Externo -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Importação da Engine Babylon.js e do Loader glTF -->
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
-  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <title>Stickman - Escape Room</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 </head>
+
 <body>
+  
+  <!-- CENÁRIO DO JOGO -->
+  <div id="game" class="hidden">
 
-  <!-- Elemento Canvas onde o WebGL renderiza a cena -->
-  <canvas id="renderCanvas"></canvas>
+      <canvas id="renderCanvas"></canvas>
 
-  <!-- Script JavaScript Principal -->
-  <script src="main.js"></script>
+      <!-- BOTÃO DE PAUSA -->
+      <button id="pauseButton" title="Pausar jogo">
+          Ⅱ
+      </button>
+
+      <!-- MENU DE PAUSA -->
+      <div id="pauseMenu" class="hidden">
+
+          <div class="pauseContent">
+
+              <h1>JOGO PAUSADO</h1>
+
+              <button id="continueButton">
+                  CONTINUAR
+              </button>
+
+              <button id="exitButton">
+                  SAIR PARA O MENU
+              </button>
+
+          </div>
+
+      </div>
+
+  </div>
+
+
+    <!-- MENU PRINCIPAL -->
+    <div id="menu">
+
+        <h1>STICKMAN 3D</h1>
+        <p>Encontre uma maneira de escapar!</p>
+
+        <button id="playButton">JOGAR</button>
+    </div>
+
+    <!-- TELA DE CARREGAMENTO -->
+    <div id="loading" class="hidden">
+        <h2>Carregando cenário...</h2>
+        <p>Aguarde um momento.</p>
+    </div>
+
+    <!-- CENÁRIO DO JOGO -->
+    <div id="game" class="hidden">
+
+        <canvas id="renderCanvas"></canvas>
+
+    </div>
+
+    <script src="main.js"></script>
 
 </body>
 </html>
