@@ -186,80 +186,11 @@ window.addEventListener("DOMContentLoaded", function () {
         const camera = new BABYLON.ArcRotateCamera(
             "camera",
             0,
-            Math.PI / 3,
-            6,
-            new BABYLON.Vector3(0, 2.9, 0),
+            Math.PI - 0.15,
+            8,
+            new BABYLON.Vector3(0, 0, 0),
             scene
         );
-
-        //camera.attachControl(canvas, true);
-
-
-        // ILUMINAÇÃO
-        const hemiLight = new BABYLON.HemisphericLight(
-            "hemiLight",
-            new BABYLON.Vector3(0, 1, 0),
-            scene
-        );
-
-        hemiLight.intensity = 1.0;
-
-        const dirLight = new BABYLON.DirectionalLight(
-            "dirLight",
-            new BABYLON.Vector3(-1, -2, -1),
-            scene
-        );
-
-        dirLight.position = new BABYLON.Vector3(5, 10, 5);
-        dirLight.intensity = 0.5;
-
-
-        // CARREGAMENTO DOS MODELOS
-        const modelos = await Promise.all([
-
-            BABYLON.SceneLoader.ImportMeshAsync(
-                "", "./assets/", "Cama.glb", scene
-            ),
-
-            BABYLON.SceneLoader.ImportMeshAsync(
-                "", "./assets/", "Poster.glb", scene
-            ),
-
-            BABYLON.SceneLoader.ImportMeshAsync(
-                "", "./assets/", "PrisaoCaixa.glb", scene
-            ),
-
-            BABYLON.SceneLoader.ImportMeshAsync(
-                "", "./assets/", "stickman.glb", scene
-            )
-
-        ]);
-
-        console.log("Todos os modelos foram carregados!");
-
-
-        // CONFIGURAÇÃO DOS MODELOS
-        const cama = modelos[0].meshes[0];
-        cama.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-
-        const poster = modelos[1].meshes[0];
-        poster.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-
-        const prisao = modelos[2].meshes[0];
-        prisao.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-
-        const stickman = modelos[3].meshes[0];
-
-        stickman.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
-        stickman.position = new BABYLON.Vector3(0, 2.9, 0);
-        stickman.rotation = new BABYLON.Vector3(0, 0, 0);
-
-        // IDENTIFICAÇÃO DOS OBJETOS
-        cama.name = "cama";
-        poster.name = "poster";
-        prisao.name = "prisao";
-        stickman.name = "stickman";
-
 
         // POSIÇÕES DA CÂMERA
         const posicoesCamera = [
@@ -325,8 +256,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
         let indiceAtual = 0;
 
-        function aplicarPosicaoCamera() {
-
+        function aplicarPosicaoCamera(index) {
+          if (index !== undefined) indiceAtual=index;
             const config = posicoesCamera[indiceAtual];
 
             camera.target = config.target;
@@ -336,6 +267,118 @@ window.addEventListener("DOMContentLoaded", function () {
 
         }
 
+        //camera.attachControl(canvas, true);
+
+        // ILUMINAÇÃO
+        const hemiLight = new BABYLON.HemisphericLight(
+            "hemiLight",
+            new BABYLON.Vector3(0, 1, 0),
+            scene
+        );
+
+        hemiLight.intensity = 1.0;
+
+        const dirLight = new BABYLON.DirectionalLight(
+            "dirLight",
+            new BABYLON.Vector3(-1, -2, -1),
+            scene
+        );
+
+        dirLight.position = new BABYLON.Vector3(5, 10, 5);
+        dirLight.intensity = 0.5;
+
+        // ESTADO DA INTRO / GAMEPLAY
+        let introEmAndamento = true;
+        let animIntro = null;
+
+        aplicarPosicaoCamera(3);
+
+        function finalizarIntro() {
+            if (!introEmAndamento) return;
+            introEmAndamento = false;
+
+            if (animIntro) {
+                animIntro.goToFrame(animIntro.to);
+                animIntro.stop();
+            }
+
+            console.log("Intro concluída — gameplay liberado!");
+            aplicarPosicaoCamera(3);
+            prisao.setEnabled(true);
+        }
+
+        // CARREGAMENTO DOS MODELOS
+        const modelos = await Promise.all([
+
+            BABYLON.SceneLoader.ImportMeshAsync(
+                "", "./assets/", "Cama.glb", scene
+            ),
+
+            BABYLON.SceneLoader.ImportMeshAsync(
+                "", "./assets/", "Poster.glb", scene
+            ),
+
+            BABYLON.SceneLoader.ImportMeshAsync(
+                "", "./assets/", "PrisaoCaixa.glb", scene
+            ),
+
+            BABYLON.SceneLoader.ImportMeshAsync(
+                "", "./assets/", "stickman.glb", scene
+            ),
+
+            BABYLON.SceneLoader.ImportMeshAsync(
+                "", "./assets/", "anim_cela.glb", scene
+            )
+
+        ]);
+
+        console.log("Todos os modelos foram carregados!");
+
+        // CONFIGURAÇÃO DOS MODELOS
+        const cama = modelos[0].meshes[0];
+        cama.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+
+        const poster = modelos[1].meshes[0];
+        poster.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+
+        const prisao = modelos[2].meshes[0];
+        prisao.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+        prisao.setEnabled(false); //para deixar a cela invisível até acabar a cela animada
+
+        const stickman = modelos[3].meshes[0];
+
+        const animCelaResult = modelos[4];
+        const animCelaMesh = animCelaResult.meshes[0];
+        if (animCelaMesh) {
+            animCelaMesh.name = "anim_cela";
+            animCelaMesh.rotationQuaternion = null;
+            animCelaMesh.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+        }
+        
+        // Inicia todas as animações do arquivo juntas                                                                                   
+        if (animCelaResult.animationGroups.length > 0) {                                                                                 
+          animCelaResult.animationGroups.forEach(ag => {                                                                               
+            ag.loopAnimation = false;                                                                                                
+            ag.reset();                                                                                                              
+            ag.play(false);                                                                                                          
+        });        
+
+        animCelaResult.animationGroups[0].onAnimationGroupEndObservable.addOnce(() => {                                              
+            finalizarIntro();                                                                                                        
+        });                                                                                                                          
+        } else {                                                                                                                         
+            finalizarIntro();                                                                                                            
+        }                     
+
+        stickman.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+        stickman.position = new BABYLON.Vector3(0, 2.9, 0);
+        stickman.rotation = new BABYLON.Vector3(0, 0, 0);
+
+        // IDENTIFICAÇÃO DOS OBJETOS
+        cama.name = "cama";
+        poster.name = "poster";
+        prisao.name = "prisao";
+        stickman.name = "stickman";
 
         // CONTROLES DO TECLADO
         keydownHandler = function (event) {
@@ -419,7 +462,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
             function detectarMouse(event) {
 
-                if (isPaused) return;
+                if (isPaused || introEmAndamento) return;
 
                 const rect = canvas.getBoundingClientRect();
 
